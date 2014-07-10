@@ -1,0 +1,112 @@
+<html lang="en">
+<head>
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <title>Recipe King</title>
+    <link href="/app/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <!--libraries -->
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/app/js/lib/underscore-min.js"></script>
+    <script type="text/javascript" src="/app/js/lib/backbone.js"></script>
+
+    <!--templates-->
+    <script type="text/jst" id="addTemplate">
+        <form role="form">
+            <div class="form-group">
+                <label for="recipeName">Name</label>
+                <input type="text" class="form-control" id="recipeName" name="recipeName" value="<%= name %>" placeholder="Enter recipe name">
+            </div>
+            <div class="form-group">
+                <label for="recipeDescription">Description</label>
+                <textarea class="form-control" id="recipeDescription" name="recipeDescription" placeholder="Enter recipe description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="recipeSteps">Steps</label>
+                <textarea class="form-control" id="recipeSteps" name="recipeSteps" placeholder="Enter recipe instructions"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="recipeIngredients">Ingredients</label>
+                <textarea class="form-control" id="recipeIngredients" name="recipeIngredients" placeholder="List ingredients and amounts"></textarea>
+            </div>
+            <button type="submit" class="save-recipe btn btn-default">Submit Recipe</button>
+        </form>
+    </script>
+
+    <script type="text/template" id="indexTemplate">
+        <div class="row">
+            <!--<form role="form">-->
+            <div class="form-group">
+                <label for="query">Search Recipies</label>
+                <input type="text" class="form-control" id="query" name="query" <% if (!_.isNull(results)) { %> value="<%=results.id%>"<%}%> placeholder="Enter dish name, ingredients, ect.">
+            </div>
+            <button type="submit" class="search-recipe btn btn-default">Search</button>
+            <!--</form>-->
+        </div>
+        <% if (!_.isNull(results)) { %>
+        <% _.each(results.recipies, function(recipe) { %>
+        <div class="row">
+            <h3><a href="#view/<%= recipe.id %>"><%= recipe.name %></a></h3>
+            <p><%= recipe.description %></p>
+        </div>
+        <% }); %>
+        <% } %>
+
+    </script>
+
+    <script type="text/template" id="viewTemplate">
+        <div class="row">
+            <div class="col-md-12">
+                <h2><%= name %></h2>
+                <p class="lead"><%= description %></p>
+            </div>
+        </div>
+        <div class="row"></div>
+        <div class="row">
+            <div class="col-md-8">
+                <p class="lead"><%= steps %></p>
+            </div>
+            <div class="col-md-4">
+                <p><%= ingredients %></p>
+            </div>
+        </div>
+    </script>
+
+    <!--backbone app -->
+    <script type="text/javascript" src="/app/js/routes.js"></script>
+    <script type="text/javascript" src="/app/js/models/recipe.js"></script>
+    <script type="text/javascript" src="/app/js/models/searchresults.js"></script>
+    <script type="text/javascript" src="/app/js/views/add.js"></script>
+    <script type="text/javascript" src="/app/js/views/index.js"></script>
+    <script type="text/javascript" src="/app/js/views/searchresults.js"></script>
+    <script type="text/javascript" src="/app/js/views/view.js"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Recipe King</a>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="" id="searchNavLink">Search</a></li>
+                <li><a href="#add" id="addNavLink">Add</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" id="content">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/app/js/lib/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    var appRouter = new APP.RecipeKingRouter();
+    Backbone.history.start();
+</script>
+</body>
+</html>
